@@ -1,4 +1,4 @@
-module github.com/alexedwards/scs/mysqlstore
+module github.com/jum/scs/mysqlstore
 
 go 1.12
 
