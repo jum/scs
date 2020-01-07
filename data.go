@@ -59,7 +59,7 @@ func (s *SessionManager) Load(ctx context.Context, token string) (context.Contex
 		return s.addSessionDataToContext(ctx, newSessionData(s.Lifetime)), nil
 	}
 
-	b, found, err := s.Store.Find(token)
+	b, found, err := s.ContextStore.Find(ctx, token)
 	if err != nil {
 		return nil, err
 	} else if !found {
@@ -125,7 +125,7 @@ func (s *SessionManager) Commit(ctx context.Context) (string, time.Time, error) 
 		}
 	}
 
-	err = s.Store.Commit(sd.token, b, expiry)
+	err = s.ContextStore.Commit(ctx, sd.token, b, expiry)
 	if err != nil {
 		return "", time.Time{}, err
 	}
@@ -142,7 +142,7 @@ func (s *SessionManager) Destroy(ctx context.Context) error {
 	sd.mu.Lock()
 	defer sd.mu.Unlock()
 
-	err := s.Store.Delete(sd.token)
+	err := s.ContextStore.Delete(ctx, sd.token)
 	if err != nil {
 		return err
 	}
@@ -295,7 +295,7 @@ func (s *SessionManager) RenewToken(ctx context.Context) error {
 	sd.mu.Lock()
 	defer sd.mu.Unlock()
 
-	err := s.Store.Delete(sd.token)
+	err := s.ContextStore.Delete(ctx, sd.token)
 	if err != nil {
 		return err
 	}
