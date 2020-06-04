@@ -84,15 +84,6 @@ func (s *SessionManager) Load(ctx context.Context, token string) (context.Contex
 	return s.addSessionDataToContext(ctx, sd), nil
 }
 
-// LoadNew returns a new context.Context containing a new empty instance of
-// session data.
-//
-// Most applications will use the LoadAndSave() middleware and will not need to
-// use this method.
-func (s *SessionManager) LoadNew(ctx context.Context) (context.Context, error) {
-	return s.addSessionDataToContext(ctx, newSessionData(s.Lifetime)), nil
-}
-
 // Commit saves the session data to the session store and returns the session
 // token and expiry time.
 //
@@ -537,9 +528,14 @@ func generateToken() (string, error) {
 
 type contextKey string
 
-var contextKeyID uint64
+var (
+	contextKeyID      uint64
+	contextKeyIDMutex = &sync.Mutex{}
+)
 
 func generateContextKey() contextKey {
+	contextKeyIDMutex.Lock()
+	defer contextKeyIDMutex.Unlock()
 	atomic.AddUint64(&contextKeyID, 1)
 	return contextKey(fmt.Sprintf("session.%d", contextKeyID))
 }

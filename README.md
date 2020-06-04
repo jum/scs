@@ -32,11 +32,16 @@
 This package requires Go 1.12 or newer.
 
 ```
+<<<<<<< HEAD
 $ go get github.com/jum/scs/v2@latest
+=======
+$ go get github.com/alexedwards/scs/v2
+>>>>>>> 40c2a5f7eae8f57d46a0afc78dff15d4f34f4f70
 ```
 
 Note: If you're using the traditional `GOPATH` mechanism to manage dependencies, instead of modules, you'll need to `go get` and `import` `github.com/jum/scs` without the `v2` suffix.
 
+Please use [versioned releases](https://github.com/alexedwards/scs/releases). Code in tip may contain experimental features which are subject to change.
 
 ### Basic Use
 
