@@ -32,11 +32,7 @@
 This package requires Go 1.12 or newer.
 
 ```
-<<<<<<< HEAD
-$ go get github.com/jum/scs/v2@latest
-=======
-$ go get github.com/alexedwards/scs/v2
->>>>>>> 40c2a5f7eae8f57d46a0afc78dff15d4f34f4f70
+$ go get github.com/jum/scs/v3@latest
 ```
 
 Note: If you're using the traditional `GOPATH` mechanism to manage dependencies, instead of modules, you'll need to `go get` and `import` `github.com/jum/scs` without the `v2` suffix.
@@ -155,7 +151,8 @@ The session stores currently included are shown in the table below. Please click
 | [boltstore](https://github.com/jum/scs/tree/master/boltstore)       			| BoltDB based session store  		                                               |
 | [memstore](https://github.com/jum/scs/tree/master/memstore)       			| In-memory session store (default)                                                |
 | [mysqlstore](https://github.com/jum/scs/tree/master/mysqlstore)   			| MySQL based session store                                                        |
-| [postgresstore](https://github.com/jum/scs/tree/master/postgresstore)         | PostgreSQL based session store                                                   |
+| [postgresstore](https://github.com/jum/scs/tree/master/postgresstore)         | PostgreSQL based session store (using the [pq](https://github.com/lib/pq) driver)                                                 |
+| [pgxstore](https://github.com/jum/scs/tree/master/pgxstore)         | PostgreSQL based session store (using the [pgx](https://github.com/jackc/pgx) driver)                                                 |
 | [redisstore](https://github.com/jum/scs/tree/master/redisstore)       		| Redis based session store |
 | [sqlite3store](https://github.com/jum/scs/tree/master/sqlite3store) | SQLite3 based session store |
 
@@ -214,4 +211,4 @@ It is possible for an application to support multiple sessions per request, with
 
 This package requires Go 1.12 or newer.
 
-It is not compatible with the [Echo](https://echo.labstack.com/) framework. Please consider using the [Echo session manager](https://echo.labstack.com/middleware/session) instead.
+You may have [some problems](https://github.com/alexedwards/scs/issues/57) using this package with the [Echo](https://echo.labstack.com/) framework. If you do, then please consider using the [Echo session manager](https://echo.labstack.com/middleware/session) instead.
