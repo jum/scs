@@ -149,7 +149,9 @@ The session stores currently included are shown in the table below. Please click
 |:------------------------------------------------------------------------------------- |----------------------------------------------------------------------------------|
 | [badgerstore](https://github.com/jum/scs/tree/master/badgerstore)       		| BadgerDB based session store  		                                               |
 | [boltstore](https://github.com/jum/scs/tree/master/boltstore)       			| BoltDB based session store  		                                               |
+| [firestore](https://github.com/jum/scs/tree/master/firestore)       			| Google Cloud Firestore based session store  		                                               |
 | [memstore](https://github.com/jum/scs/tree/master/memstore)       			| In-memory session store (default)                                                |
+| [mongodbstore](https://github.com/jum/scs/tree/master/mongodbstore)       	| MongoDB based session store                                               |
 | [mysqlstore](https://github.com/jum/scs/tree/master/mysqlstore)   			| MySQL based session store                                                        |
 | [postgresstore](https://github.com/jum/scs/tree/master/postgresstore)         | PostgreSQL based session store (using the [pq](https://github.com/lib/pq) driver)                                                 |
 | [pgxstore](https://github.com/jum/scs/tree/master/pgxstore)         | PostgreSQL based session store (using the [pgx](https://github.com/jackc/pgx) driver)                                                 |
