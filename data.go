@@ -535,6 +535,67 @@ func (s *SessionManager) RememberMe(ctx context.Context, val bool) {
 	s.Put(ctx, "__rememberMe", val)
 }
 
+// Iterate retrieves all active (i.e. not expired) sessions from the store and
+// executes the provided function fn for each session. If the session store
+// being used does not support iteration then Iterate will panic.
+func (s *SessionManager) Iterate(ctx context.Context, fn func(context.Context) error) error {
+	iterableStore, ok := s.ContextStore.(IterableContextStore)
+	if !ok {
+		iterableStore = nil
+		// For compatibility, also wrap the IterableStore interface.
+		sa, ok := s.ContextStore.(*StoreAdapter)
+		if ok {
+			is, ok := sa.Store.(IterableStore)
+			if ok {
+				iterableStore = &IterableStoreAdapter{Store: is}
+			}
+		}
+		if iterableStore == nil {
+			panic(fmt.Sprintf("type %T does not implement IterableContextStore/IterableStore interface", s.ContextStore))
+		}
+	}
+
+	allSessions, err := iterableStore.All(ctx)
+	if err != nil {
+		return err
+	}
+
+	for token, b := range allSessions {
+		ctx := context.Background()
+
+		sd := &sessionData{
+			status: Unmodified,
+			token:  token,
+		}
+
+		sd.deadline, sd.values, err = s.Codec.Decode(b)
+		if err != nil {
+			return err
+		}
+
+		ctx = s.addSessionDataToContext(ctx, sd)
+
+		err = fn(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// Deadline returns the 'absolute' expiry time for the session. Please note
+// that if you are using an idle timeout, it is possible that a session will
+// expire due to non-use before the returned deadline.
+func (s *SessionManager) Deadline(ctx context.Context) time.Time {
+	sd := s.getSessionDataFromContext(ctx)
+
+	sd.mu.Lock()
+	defer sd.mu.Unlock()
+
+	return sd.deadline
+}
+
 func (s *SessionManager) addSessionDataToContext(ctx context.Context, sd *sessionData) context.Context {
 	return context.WithValue(ctx, s.contextKey, sd)
 }
