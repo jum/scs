@@ -1,7 +1,6 @@
 # SCS: HTTP Session Management for Go
 
-[![GoDoc](https://godoc.org/github.com/jum/scs?status.png)](https://godoc.org/github.com/jum/scs)
-[![Build status](https://travis-ci.org/jum/stack.svg?branch=master)](https://travis-ci.org/jum/scs)
+[![GoDoc](https://godoc.org/github.com/jum/scs?status.png)](https://pkg.go.dev/github.com/jum/scs/v3?tab=doc)
 [![Go report card](https://goreportcard.com/badge/github.com/jum/scs)](https://goreportcard.com/report/github.com/jum/scs)
 [![Test coverage](http://gocover.io/_badge/github.com/jum/scs)](https://gocover.io/github.com/jum/scs)
 
@@ -35,9 +34,9 @@ This package requires Go 1.12 or newer.
 $ go get github.com/jum/scs/v3@latest
 ```
 
-Note: If you're using the traditional `GOPATH` mechanism to manage dependencies, instead of modules, you'll need to `go get` and `import` `github.com/jum/scs` without the `v2` suffix.
+Note: If you're using the traditional `GOPATH` mechanism to manage dependencies, instead of modules, you'll need to `go get` and `import` `github.com/jum/scs` without the `v3` suffix.
 
-Please use [versioned releases](https://github.com/alexedwards/scs/releases). Code in tip may contain experimental features which are subject to change.
+Please use [versioned releases](https://github.com/jum/scs/releases). Code in tip may contain experimental features which are subject to change.
 
 ### Basic Use
 
@@ -51,7 +50,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jum/scs/v2"
+	"github.com/jum/scs/v3"
 )
 
 var sessionManager *scs.SessionManager
@@ -117,6 +116,7 @@ sessionManager.Cookie.SameSite = http.SameSiteStrictMode
 sessionManager.Cookie.Secure = true
 ```
 
+<<<<<<< HEAD
 Documentation for all available settings and their default values can be [found here](https://godoc.org/github.com/jum/scs#SessionManager).
 
 ### Working with Session Data
@@ -128,14 +128,33 @@ The [`Pop()`](https://godoc.org/github.com/jum/scs#SessionManager.Pop) method (a
 Some other useful functions are [`Exists()`](https://godoc.org/github.com/jum/scs#SessionManager.Exists) (which returns a `bool` indicating whether or not a given key exists in the session data) and [`Keys()`](https://godoc.org/github.com/jum/scs#SessionManager.Keys) (which returns a sorted slice of keys in the session data).
 
 Individual data items can be deleted from the session using the [`Remove()`](https://godoc.org/github.com/jum/scs#SessionManager.Remove) method. Alternatively, all session data can de deleted by using the [`Destroy()`](https://godoc.org/github.com/jum/scs#SessionManager.Destroy) method. After calling `Destroy()`, any further operations in the same request cycle will result in a new session being created --- with a new session token and a new lifetime.
+=======
+Documentation for all available settings and their default values can be [found here](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager).
+
+### Working with Session Data
+
+Data can be set using the [`Put()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Put) method and retrieved with the [`Get()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Get) method. A variety of helper methods like [`GetString()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetString), [`GetInt()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetInt) and [`GetBytes()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetBytes) are included for common data types. Please see [the documentation](https://pkg.go.dev/github.com/alexedwards/scs/v2#pkg-index) for a full list of helper methods.
+
+The [`Pop()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Pop) method (and accompanying helpers for common data types) act like a one-time `Get()`, retrieving the data and removing it from the session in one step. These are useful if you want to implement 'flash' message functionality in your application, where messages are displayed to the user once only.
+
+Some other useful functions are [`Exists()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Exists) (which returns a `bool` indicating whether or not a given key exists in the session data) and [`Keys()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Keys) (which returns a sorted slice of keys in the session data).
+
+Individual data items can be deleted from the session using the [`Remove()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Remove) method. Alternatively, all session data can de deleted by using the [`Destroy()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Destroy) method. After calling `Destroy()`, any further operations in the same request cycle will result in a new session being created --- with a new session token and a new lifetime.
+>>>>>>> upstream/master
 
 Behind the scenes SCS uses gob encoding to store session data, so if you want to store custom types in the session data they must be [registered](https://golang.org/pkg/encoding/gob/#Register) with the encoding/gob package first. Struct fields of custom types must also be exported so that they are visible to the encoding/gob package. Please [see here](https://gist.github.com/alexedwards/d6eca7136f98ec12ad606e774d3abad3) for a working example.
 
 ### Loading and Saving Sessions
 
+<<<<<<< HEAD
 Most applications will use the [`LoadAndSave()`](https://godoc.org/github.com/jum/scs#SessionManager.LoadAndSave) middleware. This middleware takes care of loading and committing session data to the session store, and communicating the session token to/from the client in a cookie as necessary.
 
 If you want to customize the behavior (like communicating the session token to/from the client in a HTTP header, or creating a distributed lock on the session token for the duration of the request) you are encouraged to create your own alternative middleware using the code in [`LoadAndSave()`](https://godoc.org/github.com/jum/scs#SessionManager.LoadAndSave) as a template. An example is [given here](https://gist.github.com/alexedwards/cc6190195acfa466bf27f05aa5023f50).
+=======
+Most applications will use the [`LoadAndSave()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.LoadAndSave) middleware. This middleware takes care of loading and committing session data to the session store, and communicating the session token to/from the client in a cookie as necessary.
+
+If you want to customize the behavior (like communicating the session token to/from the client in a HTTP header, or creating a distributed lock on the session token for the duration of the request) you are encouraged to create your own alternative middleware using the code in [`LoadAndSave()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.LoadAndSave) as a template. An example is [given here](https://gist.github.com/alexedwards/cc6190195acfa466bf27f05aa5023f50).
+>>>>>>> upstream/master
 
 Or for more fine-grained control you can load and save sessions within your individual handlers (or from anywhere in your application). [See here](https://gist.github.com/alexedwards/0570e5a59677e278e13acb8ea53a3b30) for an example.
 
@@ -162,7 +181,7 @@ Custom session stores are also supported. Please [see here](#using-custom-sessio
 
 ### Using Custom Session Stores
 
-[`scs.Store`](https://godoc.org/github.com/jum/scs#Store) defines the interface for custom session stores. Any object that implements this interface can be set as the store when configuring the session.
+[`scs.Store`](https://pkg.go.dev/github.com/jum/scs/v3#Store) defines the interface for custom session stores. Any object that implements this interface can be set as the store when configuring the session.
 
 ```go
 type Store interface {
@@ -187,7 +206,7 @@ type Store interface {
 
 ### Preventing Session Fixation
 
-To help prevent session fixation attacks you should [renew the session token after any privilege level change](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Session_Management_Cheat_Sheet.md#renew-the-session-id-after-any-privilege-level-change). Commonly, this means that the session token must to be changed when a user logs in or out of your application. You can do this using the [`RenewToken()`](https://godoc.org/github.com/jum/scs#SessionManager.RenewToken) method like so:
+To help prevent session fixation attacks you should [renew the session token after any privilege level change](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Session_Management_Cheat_Sheet.md#renew-the-session-id-after-any-privilege-level-change). Commonly, this means that the session token must to be changed when a user logs in or out of your application. You can do this using the [`RenewToken()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.RenewToken) method like so:
 
 ```go
 func loginHandler(w http.ResponseWriter, r *http.Request) {
