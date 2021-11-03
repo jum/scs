@@ -8,7 +8,7 @@
 ## Features
 
 * Automatic loading and saving of session data via middleware.
-* Choice of server-side session stores including PostgreSQL, MySQL, Redis, BadgerDB and BoltDB. Custom session stores are also supported.
+* Choice of server-side session stores including PostgreSQL, MySQL, Redis, Badger, Bolt and BuntDB. Custom session stores are also supported.
 * Supports multiple sessions per request, 'flash' messages, session token regeneration, idle and absolute session timeouts, and 'remember me' functionality.
 * Easy to extend and customize. Communicate session tokens to/from clients in HTTP headers or request/response bodies.
 * Efficient design. Smaller, faster and uses less memory than [gorilla/sessions](https://github.com/gorilla/sessions).
@@ -116,45 +116,20 @@ sessionManager.Cookie.SameSite = http.SameSiteStrictMode
 sessionManager.Cookie.Secure = true
 ```
 
-<<<<<<< HEAD
-Documentation for all available settings and their default values can be [found here](https://godoc.org/github.com/jum/scs#SessionManager).
+Documentation for all available settings and their default values can be [found here](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager).
 
 ### Working with Session Data
 
-Data can be set using the [`Put()`](https://godoc.org/github.com/jum/scs#SessionManager.Put) method and retrieved with the [`Get()`](https://godoc.org/github.com/jum/scs#SessionManager.Get) method. A variety of helper methods like [`GetString()`](https://godoc.org/github.com/jum/scs#SessionManager.GetString), [`GetInt()`](https://godoc.org/github.com/jum/scs#SessionManager.GetInt) and [`GetBytes()`](https://godoc.org/github.com/jum/scs#SessionManager.GetBytes) are included for common data types. Please see [the documentation](https://godoc.org/github.com/jum/scs#pkg-index) for a full list of helper methods.
+Data can be set using the [`Put()`](https://pkg.go.dev/github.com/jum/jum/v3#SessionManager.Put) method and retrieved with the [`Get()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.Get) method. A variety of helper methods like [`GetString()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.GetString), [`GetInt()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.GetInt) and [`GetBytes()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.GetBytes) are included for common data types. Please see [the documentation](https://pkg.go.dev/github.com/jum/scs/v3#pkg-index) for a full list of helper methods.
 
-The [`Pop()`](https://godoc.org/github.com/jum/scs#SessionManager.Pop) method (and accompanying helpers for common data types) act like a one-time `Get()`, retrieving the data and removing it from the session in one step. These are useful if you want to implement 'flash' message functionality in your application, where messages are displayed to the user once only.
+The [`Pop()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.Pop) method (and accompanying helpers for common data types) act like a one-time `Get()`, retrieving the data and removing it from the session in one step. These are useful if you want to implement 'flash' message functionality in your application, where messages are displayed to the user once only.
 
-Some other useful functions are [`Exists()`](https://godoc.org/github.com/jum/scs#SessionManager.Exists) (which returns a `bool` indicating whether or not a given key exists in the session data) and [`Keys()`](https://godoc.org/github.com/jum/scs#SessionManager.Keys) (which returns a sorted slice of keys in the session data).
+Some other useful functions are [`Exists()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.Exists) (which returns a `bool` indicating whether or not a given key exists in the session data) and [`Keys()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.Keys) (which returns a sorted slice of keys in the session data).
 
-Individual data items can be deleted from the session using the [`Remove()`](https://godoc.org/github.com/jum/scs#SessionManager.Remove) method. Alternatively, all session data can de deleted by using the [`Destroy()`](https://godoc.org/github.com/jum/scs#SessionManager.Destroy) method. After calling `Destroy()`, any further operations in the same request cycle will result in a new session being created --- with a new session token and a new lifetime.
-=======
-Documentation for all available settings and their default values can be [found here](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager).
+Individual data items can be deleted from the session using the [`Remove()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.Remove) method. Alternatively, all session data can de deleted by using the [`Destroy()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.Destroy) method. After calling `Destroy()`, any further operations in the same request cycle will result in a new session being created --- with a new session token and a new lifetime.
+Most applications will use the [`LoadAndSave()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.LoadAndSave) middleware. This middleware takes care of loading and committing session data to the session store, and communicating the session token to/from the client in a cookie as necessary.
 
-### Working with Session Data
-
-Data can be set using the [`Put()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Put) method and retrieved with the [`Get()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Get) method. A variety of helper methods like [`GetString()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetString), [`GetInt()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetInt) and [`GetBytes()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetBytes) are included for common data types. Please see [the documentation](https://pkg.go.dev/github.com/alexedwards/scs/v2#pkg-index) for a full list of helper methods.
-
-The [`Pop()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Pop) method (and accompanying helpers for common data types) act like a one-time `Get()`, retrieving the data and removing it from the session in one step. These are useful if you want to implement 'flash' message functionality in your application, where messages are displayed to the user once only.
-
-Some other useful functions are [`Exists()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Exists) (which returns a `bool` indicating whether or not a given key exists in the session data) and [`Keys()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Keys) (which returns a sorted slice of keys in the session data).
-
-Individual data items can be deleted from the session using the [`Remove()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Remove) method. Alternatively, all session data can de deleted by using the [`Destroy()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Destroy) method. After calling `Destroy()`, any further operations in the same request cycle will result in a new session being created --- with a new session token and a new lifetime.
->>>>>>> upstream/master
-
-Behind the scenes SCS uses gob encoding to store session data, so if you want to store custom types in the session data they must be [registered](https://golang.org/pkg/encoding/gob/#Register) with the encoding/gob package first. Struct fields of custom types must also be exported so that they are visible to the encoding/gob package. Please [see here](https://gist.github.com/alexedwards/d6eca7136f98ec12ad606e774d3abad3) for a working example.
-
-### Loading and Saving Sessions
-
-<<<<<<< HEAD
-Most applications will use the [`LoadAndSave()`](https://godoc.org/github.com/jum/scs#SessionManager.LoadAndSave) middleware. This middleware takes care of loading and committing session data to the session store, and communicating the session token to/from the client in a cookie as necessary.
-
-If you want to customize the behavior (like communicating the session token to/from the client in a HTTP header, or creating a distributed lock on the session token for the duration of the request) you are encouraged to create your own alternative middleware using the code in [`LoadAndSave()`](https://godoc.org/github.com/jum/scs#SessionManager.LoadAndSave) as a template. An example is [given here](https://gist.github.com/alexedwards/cc6190195acfa466bf27f05aa5023f50).
-=======
-Most applications will use the [`LoadAndSave()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.LoadAndSave) middleware. This middleware takes care of loading and committing session data to the session store, and communicating the session token to/from the client in a cookie as necessary.
-
-If you want to customize the behavior (like communicating the session token to/from the client in a HTTP header, or creating a distributed lock on the session token for the duration of the request) you are encouraged to create your own alternative middleware using the code in [`LoadAndSave()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.LoadAndSave) as a template. An example is [given here](https://gist.github.com/alexedwards/cc6190195acfa466bf27f05aa5023f50).
->>>>>>> upstream/master
+If you want to customize the behavior (like communicating the session token to/from the client in a HTTP header, or creating a distributed lock on the session token for the duration of the request) you are encouraged to create your own alternative middleware using the code in [`LoadAndSave()`](https://pkg.go.dev/github.com/jum/scs/v3#SessionManager.LoadAndSave) as a template. An example is [given here](https://gist.github.com/alexedwards/cc6190195acfa466bf27f05aa5023f50).
 
 Or for more fine-grained control you can load and save sessions within your individual handlers (or from anywhere in your application). [See here](https://gist.github.com/alexedwards/0570e5a59677e278e13acb8ea53a3b30) for an example.
 
@@ -166,11 +141,11 @@ The session stores currently included are shown in the table below. Please click
 
 | Package                                                                               |                                                                                  |
 |:------------------------------------------------------------------------------------- |----------------------------------------------------------------------------------|
-| [badgerstore](https://github.com/jum/scs/tree/master/badgerstore)       		| BadgerDB based session store  		                                               |
-| [boltstore](https://github.com/jum/scs/tree/master/boltstore)       			| BoltDB based session store  		                                               |
-| [firestore](https://github.com/jum/scs/tree/master/firestore)       			| Google Cloud Firestore based session store  		                                               |
+| [badgerstore](https://github.com/jum/scs/tree/master/badgerstore)       		| Badger based session store  		                                           |
+| [boltstore](https://github.com/jum/scs/tree/master/boltstore)       			| Bolt based session store  		                                               |
+| [buntdbstore](https://github.com/jum/scs/tree/master/buntdbstore)  			| BuntDB based session store  		                                               |
 | [memstore](https://github.com/jum/scs/tree/master/memstore)       			| In-memory session store (default)                                                |
-| [mongodbstore](https://github.com/jum/scs/tree/master/mongodbstore)       	| MongoDB based session store                                               |
+| [mongodbstore](https://github.com/jum/scs/tree/master/mongodbstore)       	| MongoDB based session store                                               	   |
 | [mysqlstore](https://github.com/jum/scs/tree/master/mysqlstore)   			| MySQL based session store                                                        |
 | [postgresstore](https://github.com/jum/scs/tree/master/postgresstore)         | PostgreSQL based session store (using the [pq](https://github.com/lib/pq) driver)                                                 |
 | [pgxstore](https://github.com/jum/scs/tree/master/pgxstore)         | PostgreSQL based session store (using the [pgx](https://github.com/jackc/pgx) driver)                                                 |
